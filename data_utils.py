@@ -35,8 +35,6 @@ def augment_dataset_balanced(dataset_path):
         A.RandomRotate90(p=0.5),
         A.RandomBrightnessContrast(p=0.5),
         A.GaussNoise(p=0.3),
-        A.RandomScale(scale_limit=0.2, p=0.3),
-        A.ShiftScaleRotate(shift_limit=0.1, scale_limit=0.1, rotate_limit=15, p=0.5)
     ])
 
     # Process each class directory
