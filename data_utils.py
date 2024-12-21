@@ -15,16 +15,16 @@ def get_class_counts(dataset_path):
     return class_counts
 
 def augment_dataset_balanced(dataset_path):
-    """Augment dataset to balance all classes except trash"""
+    """Augment dataset to balance all classes"""
     class_counts = get_class_counts(dataset_path)
     
-    # Find max count excluding trash class
-    non_trash_counts = {k:v for k,v in class_counts.items() if k != 'trash'}
-    target_count = max(non_trash_counts.values())
+    # Find max count of images in a class
+    trash_counts = {k:v for k,v in class_counts.items()}
+    target_count = max(trash_counts.values())
     
     # Calculate needed augmentations per image for each class
     augmentations_needed = {}
-    for class_name, count in non_trash_counts.items():
+    for class_name, count in trash_counts.items():
         if count < target_count:
             augmentations_per_image = int(np.ceil((target_count - count) / count))
             augmentations_needed[class_name] = augmentations_per_image
