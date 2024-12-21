@@ -15,7 +15,8 @@ file_path = hf_hub_download(
 os.makedirs('./data-main/train', exist_ok=True)
 os.makedirs('./data-main/val', exist_ok=True)
 # Create train and val directories for each class
-classes = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
+# Remove trash class => potential noise
+classes = ['cardboard', 'glass', 'metal', 'paper', 'plastic']
 for class_name in classes:
     os.makedirs(f'./data-main/train/{class_name}', exist_ok=True)
     os.makedirs(f'./data-main/val/{class_name}', exist_ok=True)
