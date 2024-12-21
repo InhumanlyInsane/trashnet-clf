@@ -1,1 +1,4 @@
-# trashnet-clf
+# Trashnet Image Classification
+
+## Introduction
+Hello! 
