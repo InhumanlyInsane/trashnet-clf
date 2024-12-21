@@ -13,3 +13,5 @@ env.bak/
 venv.bak/
 
 __pycache__/
+.github/
+test.ipynb
