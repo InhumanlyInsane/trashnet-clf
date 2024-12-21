@@ -31,7 +31,6 @@ def augment_dataset_balanced(dataset_path):
     
     # Define augmentation pipeline
     transform = A.Compose([
-        A.Resize(height=384, width=512, always_apply=True),  # Add fixed resize
         A.HorizontalFlip(p=0.5),
         A.RandomRotate90(p=0.5),
         A.RandomBrightnessContrast(p=0.5),
@@ -61,6 +60,7 @@ def augment_dataset_balanced(dataset_path):
             for i in range(augs_needed):
                 augmented = transform(image=image)
                 aug_image = augmented['image']
+                aug_image = cv2.resize(aug_image, (512, 384))
                 
                 name, ext = os.path.splitext(img_name)
                 new_name = f"{name}_aug_{i+1}{ext}"
