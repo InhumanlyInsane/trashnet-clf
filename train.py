@@ -7,6 +7,7 @@ import configparser
 import os
 
 os.environ['WANDB_DISABLED'] = 'true'
+os.environ['WANDB_MODE'] = 'disabled'
 
 def load_config(config_path='train.cfg'):
     config = configparser.ConfigParser()
