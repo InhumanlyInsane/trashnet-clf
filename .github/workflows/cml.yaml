@@ -28,10 +28,3 @@ jobs:
           # Display results
           echo "### Metrics" > reports.md
           cat metrics.txt >> reports.md
-      - name: Write CML report
-        env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Post reports as comments in GitHub PRs
-          cat results.txt >> report.md
-          cml comment create report.md
