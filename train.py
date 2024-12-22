@@ -6,6 +6,8 @@ from huggingface_hub import hf_hub_download
 import configparser
 import os
 
+os.environ['WANDB_DISABLED'] = 'true'
+
 def load_config(config_path='train.cfg'):
     config = configparser.ConfigParser()
     config.read(config_path)
@@ -45,11 +47,12 @@ names:
 model = YOLO(model_path)
 
 # Prepare data configuration
-prepare_data_yaml()
+# prepare_data_yaml()
 
+data_path = os.path.join(os.getcwd(), 'data-main')
 # Fine-tune the model
 results = model.train(
-    data='C:/Users/HP/Documents/trashnet-clf/data-main',
+    data=data_path,
     epochs=config['epochs'],
     batch=config['batch_size'],
     lr0=config['lr'],
