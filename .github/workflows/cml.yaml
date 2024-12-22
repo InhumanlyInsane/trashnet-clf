@@ -15,6 +15,9 @@ jobs:
       #   with:
       #     python-version: '3.x'
       - uses: iterative/setup-cml@v1
+      - name: Install system dependencies
+        run: |
+          apt-get update && apt-get install ffmpeg libsm6 libxext6 -y
       - name: Train model for trash classification
         run: |
           # Your ML workflow goes here
