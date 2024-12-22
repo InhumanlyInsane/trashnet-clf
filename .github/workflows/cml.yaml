@@ -24,7 +24,10 @@ jobs:
           pip install -r requirements.txt
           python dataset_collection.py
           python train.py
-
+      - name: Create CML report
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
           # Display results
           echo "## Model Training Report" > report.md
 
