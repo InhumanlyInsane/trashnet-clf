@@ -1,5 +1,11 @@
 name: your-workflow-name
 on: [push]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -29,8 +35,6 @@ jobs:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Display results
-          echo "## Model Training Report" > report.md
-          
-          echo "### Performance Metrics" >> report.md
+          echo "## Model Performance Metrics" > report.md
           cat metrics.txt >> report.md
-          cml-send-comment report.md
+          cml comment create report.md
