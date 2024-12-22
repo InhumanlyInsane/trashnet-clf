@@ -1,10 +1,13 @@
 import torch
 import torch.nn as nn
+import configparser
+import matplotlib.pyplot as plt
+import os
+from datetime import datetime
 from torchvision.datasets import ImageFolder
 from ultralytics import YOLO
 from huggingface_hub import hf_hub_download
-import configparser
-import os
+
 
 # Disabling Weights & Biases logging
 os.environ['WANDB_DISABLED'] = 'true'
@@ -59,3 +62,35 @@ with open('metrics.txt', 'w') as f:
     for key, value in metrics.items():
         if key != 'metrics':
             f.write(f'{key}: {value}\n')
+            
+# Save model
+save_dir = os.path.join(os.getcwd(), 'models')
+os.makedirs(save_dir, exist_ok=True)
+
+timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+model_save_path = os.path.join(save_dir, f'model_{timestamp}.pt')
+model.save(model_save_path)
+print(f"Model saved to: {model_save_path}")
+
+# Save metrics and plots
+metrics = results.results_dict
+plots_dir = "plots"
+os.makedirs(plots_dir, exist_ok=True)
+
+# Generate plots
+results.plot_metrics()
+plt.savefig(f"{plots_dir}/metrics.png")
+plt.close()
+
+# Save confusion matrix
+results.confusion_matrix.plot()
+plt.savefig(f"{plots_dir}/confusion_matrix.png")
+plt.close()
+
+# Save detailed metrics
+with open('metrics.txt', 'w') as f:
+    f.write('## Training Metrics\n\n')
+    f.write('| Metric | Value |\n')
+    f.write('|--------|-------|\n')
+    for k, v in metrics.items():
+        f.write(f'| {k} | {v:.4f} |\n')
