@@ -73,34 +73,3 @@ def augment_dataset_balanced(dataset_path):
                 cv2.imwrite(save_path, aug_image_bgr)
 
     print("Balanced data augmentation completed!")
-
-def apply_clahe(directory):
-    """Apply CLAHE to all images in directory and subdirectories"""
-    import cv2
-    import os
-    from tqdm import tqdm
-    
-    # Create CLAHE object
-    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
-    
-    for class_dir in os.listdir(directory):
-        class_path = os.path.join(directory, class_dir)
-        if os.path.isdir(class_path):
-            print(f"Applying CLAHE to {class_dir} images...")
-            for img_name in tqdm(os.listdir(class_path)):
-                img_path = os.path.join(class_path, img_name)
-                
-                # Read and convert image
-                img = cv2.imread(img_path)
-                lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
-                l, a, b = cv2.split(lab)
-                
-                # Apply CLAHE to L channel
-                cl = clahe.apply(l)
-                
-                # Merge channels and convert back
-                limg = cv2.merge((cl, a, b))
-                enhanced = cv2.cvtColor(limg, cv2.COLOR_LAB2BGR)
-                
-                # Save enhanced image
-                cv2.imwrite(img_path, enhanced)

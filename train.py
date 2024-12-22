@@ -6,6 +6,7 @@ from huggingface_hub import hf_hub_download
 import configparser
 import os
 
+# Disabling Weights & Biases logging
 os.environ['WANDB_DISABLED'] = 'true'
 os.environ['WANDB_MODE'] = 'disabled'
 
@@ -27,29 +28,6 @@ config = load_config()
 model_path = hf_hub_download(repo_id="SoyoKaze83/trashnet-clf", filename="weights/yolov8.pt")
 model = YOLO(model_path)
 
-def prepare_data_yaml():
-    data_yaml = """
-path: data-main  # dataset root dir
-train: train  # train images
-val: val  # val images
-
-# Classes
-names:
-    0: cardboard
-    1: glass
-    2: metal
-    3: paper
-    4: plastic
-"""
-    with open('data.yaml', 'w') as f:
-        f.write(data_yaml)
-
-# Load pre-trained model
-model = YOLO(model_path)
-
-# Prepare data configuration
-# prepare_data_yaml()
-
 data_path = os.path.join(os.getcwd(), 'data-main')
 # Fine-tune the model
 results = model.train(
@@ -62,3 +40,22 @@ results = model.train(
     momentum=config['momentum'],
     device=config['device']
 )
+
+# Make metrics file
+metrics = results.results_dict
+with open('metrics.txt', 'w') as f:
+    f.write('Training Metrics:\n')
+    f.write('-' * 20 + '\n\n')
+    
+    for epoch, values in enumerate(metrics.get('metrics', [])):
+        f.write(f'Epoch {epoch + 1}:\n')
+        for metric_name, value in values.items():
+            f.write(f'{metric_name}: {value:.4f}\n')
+        f.write('\n')
+        
+    # Save final metrics
+    f.write('Final Results:\n')
+    f.write('-' * 20 + '\n')
+    for key, value in metrics.items():
+        if key != 'metrics':
+            f.write(f'{key}: {value}\n')
