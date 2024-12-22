@@ -12,6 +12,10 @@ ENV/
 env.bak/
 venv.bak/
 
+# Others
 __pycache__/
 .github/
 test.ipynb
+trashnet-clf/
+weights/
+runs/

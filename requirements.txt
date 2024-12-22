@@ -6,3 +6,4 @@ torchvision
 numpy
 pandas
 wandb
+ultralytics==8.2.103
