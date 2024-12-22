@@ -30,12 +30,7 @@ jobs:
         run: |
           # Display results
           echo "## Model Training Report" > report.md
-
-          echo "### Model Artifacts" >> report.md
-          echo "Latest model weights:" >> report.md
-          cml-publish models/*.pt --md >> report.md
-
+          
           echo "### Performance Metrics" >> report.md
           cat metrics.txt >> report.md
-          
           cml-send-comment report.md
