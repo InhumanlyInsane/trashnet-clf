@@ -1,5 +1,11 @@
 name: your-workflow-name
 on: [push]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -24,7 +30,11 @@ jobs:
           pip install -r requirements.txt
           python dataset_collection.py
           python train.py
-
+      - name: Create CML report
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
           # Display results
-          echo "### Metrics" > reports.md
-          cat metrics.txt >> reports.md
+          echo "## Model Performance Metrics" > report.md
+          cat metrics.txt >> report.md
+          cml comment create report.md

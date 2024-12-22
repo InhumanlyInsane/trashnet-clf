@@ -1,10 +1,13 @@
 import torch
 import torch.nn as nn
+import configparser
+import matplotlib.pyplot as plt
+import os
+from datetime import datetime
 from torchvision.datasets import ImageFolder
 from ultralytics import YOLO
 from huggingface_hub import hf_hub_download
-import configparser
-import os
+
 
 # Disabling Weights & Biases logging
 os.environ['WANDB_DISABLED'] = 'true'
@@ -59,3 +62,12 @@ with open('metrics.txt', 'w') as f:
     for key, value in metrics.items():
         if key != 'metrics':
             f.write(f'{key}: {value}\n')
+            
+# Save model
+save_dir = os.path.join(os.getcwd(), 'models')
+os.makedirs(save_dir, exist_ok=True)
+
+timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+model_save_path = os.path.join(save_dir, f'model_{timestamp}.pt')
+model.save(model_save_path)
+print(f"Model saved to: {model_save_path}")
